@@ -15,18 +15,18 @@ use App\Http\Controllers\AuthController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//asszociatív tömb =>
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+Route::group(["middleware" => ["auth:sanctum"]], function(){
+    Route::post("/logout", [AuthController::class, "logout"]);
+    
+    Route::post("/blogs", [BlogController::class, "store"]);
+    Route::put("/blogs/{blog}", [BlogController::class, "update"]);
+    Route::delete("/blogs/delete/{id}", [BlogController::class, "destroy"]);
+}); 
 
 Route::post("/register", [AuthController::class, "signup"]);
 Route::post("/login", [AuthController::class, "signin"]);
-Route::post("/logout", [AuthController::class, "logout"]);
 
 Route::get("/blogs", [BlogController::class, "index"]);
-Route::post("/blogs", [BlogController::class, "store"]);
 Route::get("/blogs/{id}", [BlogController::class, "show"]);
-Route::put("/blogs/{blog}", [BlogController::class, "update"]);
-Route::delete("/blogs/delete/{id}", [BlogController::class, "destroy"]);
